@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# ELITE INSTALLER launcher:  sudo ./elite-installer {check|install|update|uninstall|version} [options]
+set -Eeuo pipefail
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+command -v python3 >/dev/null 2>&1 || { echo "ERROR: python3 is required (it ships with Ubuntu 24.04)." >&2; exit 1; }
+# -I: ignore PYTHONPATH/user site and the current directory, so nothing outside this folder can be imported
+exec python3 -I -c 'import sys; sys.path.insert(0, sys.argv.pop(1)); from elite_installer.cli import main; sys.exit(main(sys.argv[1:]))' "$DIR" "$@"
